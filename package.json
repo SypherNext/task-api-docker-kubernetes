@@ -1,0 +1,14 @@
+{
+  "name": "task-api",
+  "version": "1.1.0",
+  "description": "A small HTTP API for tasks, used in the Docker and Kubernetes Hands-On course",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "pg": "^8.16.0"
+  }
+}

@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Passwords: secrets/db_password.txt is created by you and never committed
+secrets/*
+!secrets/.gitkeep
+.env
+.env.local
+
+# Build output, coverage, logs
+dist/
+coverage/
+*.log
+npm-debug.log*
+logs/
+
+# Python (not used here, kept for tools)
+.venv/
+__pycache__/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-writer
+spec:
+  containers:
+    - name: writer
+      image: alpine:3.24
+      command: ["sh", "-c", "date >> /data/visits.txt; cat /data/visits.txt; sleep 3600"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: scratch-data

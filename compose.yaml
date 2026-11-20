@@ -1,0 +1,50 @@
+name: dkh
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: tasks
+      POSTGRES_DB: tasks
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tasks -d tasks"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    build: .
+    image: dkh-task-api:1.1.0
+    environment:
+      DB_HOST: db
+      DB_USER: tasks
+      DB_NAME: tasks
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      APP_VERSION: 1.1.0
+    secrets:
+      - db_password
+    ports:
+      - "127.0.0.1:18300:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /app/src
+
+volumes:
+  pgdata:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
